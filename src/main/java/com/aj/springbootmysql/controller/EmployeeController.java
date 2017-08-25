@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/employee/")
+@RequestMapping("/employee")
 public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
@@ -24,19 +24,19 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping(value = "getAll", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Iterable<Employee>> getAllEmployees() {
         Iterable<Employee> employees = employeeService.findAll();
         return new ResponseEntity<>(employees, HttpStatus.OK);
 	}
 
-    @RequestMapping(value = "find/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Employee>> findByName(@PathVariable String name) {
         List<Employee> employees = employeeService.findByName(name);
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "add", method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> addEmployee(@RequestBody Employee employeeRequest) {
         logger.info("Request received in EmployeeController.addEmployee is: " + employeeRequest.toString());
@@ -46,7 +46,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> updateEmployee(@RequestBody Employee employeeRequest) {
         logger.info("Request received in EmployeeController.updateEmployee is: " + employeeRequest.toString());
@@ -61,7 +61,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, String>> deleteEmployee(@PathVariable Integer id) {
         Map<String, String> response = new HashMap<>();
         employeeService.delete(id);
