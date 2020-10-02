@@ -45,6 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void delete(Integer id) {
-        employeeRepository.delete(id);
+        employeeRepository.deleteById(id);
     }
 }
