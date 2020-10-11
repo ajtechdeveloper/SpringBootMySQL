@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1           # The API version
+kind: Deployment              # Type of Kubernetes resource
+metadata:
+  name: springbootmysql-app-server    # Name of the Kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: springbootmysql-app-server
+spec:
+  replicas: 1                 # No. of replicas (or) pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: springbootmysql-app-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: springbootmysql-app-server
+    spec:                     # Specification for the containers that will be run in the Pods
+      containers:
+      - name: springbootmysql-app-server
+        image: ajtechdeveloper/springbootmysql-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 4000 # The port that the container exposes
+        resources:
+          limits:
+            cpu: 0.8
+            memory: "1Gi"     # This Spring Boot App needs around 700 MB Memory 
+        env:                  # Environment variables supplied to the Pod
+        - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+          valueFrom:          # Get the value of environment variable from kubernetes secrets
+            secretKeyRef:
+              name: mysql-user-pass
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-pass
+              key: password
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db-url
+              key: url
+---
+apiVersion: v1                # The API version
+kind: Service                 # Type of the kubernetes resource
+metadata:                     
+  name: springbootmysql-app-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: springbootmysql-app-server
+spec:                         
+  type: NodePort              # The service will be exposed by opening a Port on each node and proxying it. 
+  selector:
+    app: springbootmysql-app-server   # The service exposes Pods with label `app=springbootmysql-app-server`
+  ports:                      # Forward incoming connections on port 4000 to the target port 4000
+  - name: http
+    port: 4000
+    targetPort: 4000
