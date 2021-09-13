@@ -1,6 +1,6 @@
 # Spring Boot and MySQL Database Integration
 
-[![Build Status](https://travis-ci.org/ajtechdeveloper/SpringBootMySQL.svg?branch=master)](https://travis-ci.org/ajtechdeveloper/SpringBootMySQL)
+[![Build Status](https://app.travis-ci.com/ajtechdeveloper/SpringBootMySQL.svg?branch=master)](https://app.travis-ci.com/ajtechdeveloper/SpringBootMySQL)
 
 For Application setup and usage, please read my blog post: [Spring Boot MySQL Integration Tutorial](http://softwaredevelopercentral.blogspot.com/2017/08/spring-boot-mysql-integration-tutorial.html)
 
